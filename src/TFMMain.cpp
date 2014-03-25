@@ -28,23 +28,19 @@ RcppExport SEXP sc2pv (SEXP mat, SEXP Rscore, SEXP bg, SEXP type){
   int ncol = matrix.ncol();
   int nrow = matrix.nrow();
   m.length = ncol;
-  for(j=0; j<ncol; j++){
-    for(i=0; i<nrow; i++){
-      m.mat[i] = new double[ncol];
-      m.mat[i][j] = matrix[j*nrow+i];
-      cout << m.mat[i][j] << "\n";
-    }
-  }
-    cout << "INITIAL MATRIX" << endl;
-  for(j=0; j<ncol; j++){
-    for(i=0; i<nrow; i++){
-      cout << m.mat[i][j] << "\n";
-    }
-  }
-  cout << "Background" << endl;
   for(i=0; i<nrow; i++){
-    cout << m.background[i] << "\n";
+    m.mat[i] = new double[ncol];
+    for(j=0; j<ncol; j++){
+      m.mat[i][j] = matrix[j*nrow+i];
+    }
   }
+  /*cout << "INITIAL MATRIX" << endl;
+  for(j=0; j<ncol; j++){
+    for(i=0; i<nrow; i++){
+      cout << m.mat[i][j] << "\t";
+    }
+    cout << endl;
+  }*/
   //cout << "Matrix length  : " << m.length << endl;
   
   // toPWM when it is PFM
@@ -65,37 +61,38 @@ RcppExport SEXP sc2pv (SEXP mat, SEXP Rscore, SEXP bg, SEXP type){
   double pv;
   long long score;
   for (double granularity = initialGranularity; granularity >= maxGranularity; granularity /= 10){
-    cout << "Computing rounded matrix with granularity " << granularity << endl;
+    //cout << "Computing rounded matrix with granularity " << granularity << endl;
     m.computesIntegerMatrix(granularity);
     max = requestedScore*m.granularity + m.offset + m.errorMax+1;
     min = requestedScore*m.granularity + m.offset - m.errorMax-1;
     score = requestedScore*m.granularity + m.offset;
-    cout << "Score range : " << m.scoreRange << endl;
+    /*cout << "Score range : " << m.scoreRange << endl;
     cout << "Min         : " << min << endl;
     cout << "Max         : " << max << endl;
     cout << "Precision   : " << m.granularity << endl;
     cout << "Error max   : " << m.errorMax << endl;
-    cout << "Computing pvalue for requested score " << requestedScore << " " << score << endl;
+    cout << "Computing pvalue for requested score " << requestedScore << " " << score << endl;*/
 #ifdef MEMORYCOUNT
     m.totalMapSize = 0;
     m.totalOp = 0;
 #endif
     m.lookForPvalue(score,min,max,&ppv,&pv);
-    cout << "Prev. Pvalue  : " << ppv << endl;
+ /*   cout << "Prev. Pvalue  : " << ppv << endl;
     cout << "Pvaluex       : " << pv << endl;
-    cout << "Comp. score   : " << score << endl;
+    cout << "Comp. score   : " << score << endl;*/
 #ifdef MEMORYCOUNT
     totalSize += m.totalMapSize;
     totalOp += m.totalOp;
 #endif
-    cout << "***********************************************" << endl;
+    //cout << "***********************************************" << endl;
     if (ppv == pv) {
       if (!forcedGranularity) {
         break;
       }
     }
   }
-  cout << "Pvalue         : " << pv << endl;
-  return(background);
+  Rcpp::NumericVector ans(1);
+  ans[0] = pv;
+  return Rcpp::wrap(ans);
 }
 
