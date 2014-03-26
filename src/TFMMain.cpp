@@ -14,6 +14,9 @@
 #include <Rcpp.h>
 using namespace std;
 
+/********************************************************************
+ * .Call() Entry points  sc2pv
+ * *****************************************************************/
 RcppExport SEXP sc2pv (SEXP mat, SEXP Rscore, SEXP bg, SEXP type){
   
   Rcpp::NumericVector background(bg);
@@ -93,6 +96,12 @@ RcppExport SEXP sc2pv (SEXP mat, SEXP Rscore, SEXP bg, SEXP type){
   }
   Rcpp::NumericVector ans(1);
   ans[0] = pv;
+  // free the memory allocated, not typical Rcpp way
+  for(i=0; i<nrow; i++){
+    delete[] m.mat[i];
+  }
+  delete[] m.mat;
+
   return Rcpp::wrap(ans);
 }
 
