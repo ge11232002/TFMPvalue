@@ -105,3 +105,65 @@ RcppExport SEXP sc2pv (SEXP mat, SEXP Rscore, SEXP bg, SEXP type){
   return Rcpp::wrap(ans);
 }
 
+/********************************************************************
+ * .Call() Entry points pv2sc
+ * *****************************************************************/
+RcppExport SEXP pv2sc (SEXP mat, SEXP Rpvalue, SEXP bg, SEXP type){
+  Rcpp::NumericVector background(bg);
+  Rcpp::NumericMatrix matrix(mat);
+  Rcpp::NumericVector RPvalueVec(Rpvalue);
+  Rcpp::CharacterVector Type(type);
+  // Fill with background
+  Matrix m(background[0], background[1], background[2], background[3]);
+  // Fill with matrix
+  int i=0, j=0;
+  m.mat = new double*[4];
+  int ncol = matrix.ncol();
+  int nrow = matrix.nrow();
+  m.length = ncol;
+  for(i=0; i<nrow; i++){
+    m.mat[i] = new double[ncol];
+    for(j=0; j<ncol; j++){
+      m.mat[i][j] = matrix[j*nrow+i];
+    }
+  }
+  if(!strcmp(Type[0], "PFM")){
+    m.toLogOddRatio();
+  }
+  // PvalueToScore
+  double initialGranularity = 0.1;
+  bool forcedGranularity = false;
+  double requestedPvalue = RPvalueVec[0];
+  double maxGranularity = 1e-10;
+  bool sortColumns = false;
+  long long decrgr = 10;
+
+  m.computesIntegerMatrix(initialGranularity);
+  long long max = m.maxScore+ceil(m.errorMax+0.5);
+  long long min = m.minScore;
+  double pv;
+  long long score;
+  for (double granularity = initialGranularity; granularity >= maxGranularity; granularity /= decrgr) {
+    m.computesIntegerMatrix(granularity);
+    double ppv;
+    score = m.lookForScore(min,max,requestedPvalue,&pv,&ppv);
+    min = (score - ceil(m.errorMax+0.5)) * decrgr;
+    max = (score + ceil(m.errorMax+0.5)) * decrgr;
+    if (pv == ppv) {
+      if (!forcedGranularity) {
+        break;
+      }
+    }
+  }
+  Rcpp::NumericVector ans(1);
+  ans[0] = ((score-m.offset)/m.granularity);
+  // free the memory allocated, not typical Rcpp way
+  for(i=0; i<nrow; i++){
+    delete[] m.mat[i];
+  }
+  delete[] m.mat;
+  return Rcpp::wrap(ans);
+}
+
+
+
