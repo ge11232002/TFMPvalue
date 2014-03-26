@@ -10,6 +10,7 @@
 
 #include "Matrix.h"
 #include "ArgumentException.h"
+#include "TFMpvalue.h"
 
 #include <Rcpp.h>
 using namespace std;
@@ -165,5 +166,107 @@ RcppExport SEXP pv2sc (SEXP mat, SEXP Rpvalue, SEXP bg, SEXP type){
   return Rcpp::wrap(ans);
 }
 
+/********************************************************************
+ * .Call() Entry point FastPvalue
+ * *****************************************************************/
+RcppExport SEXP FastPvalue(SEXP mat, SEXP Rscore, SEXP bg, SEXP type, 
+    SEXP Rgranularity){
+  Rcpp::NumericVector background(bg);
+  Rcpp::NumericMatrix matrix(mat);
+  Rcpp::NumericVector RscoreVec(Rscore);
+  Rcpp::CharacterVector Type(type);
+  Rcpp::NumericVector granularityVec(Rgranularity);
 
+  // Fill with background
+  Matrix m(background[0], background[1], background[2], background[3]);
+  // Fill with matrix
+  int i=0, j=0;
+  m.mat = new double*[4];
+  int ncol = matrix.ncol();
+  int nrow = matrix.nrow();
+  m.length = ncol;
+  for(i=0; i<nrow; i++){
+    m.mat[i] = new double[ncol];
+    for(j=0; j<ncol; j++){
+      m.mat[i][j] = matrix[j*nrow+i];
+    }
+  }
+  if(!strcmp(Type[0], "PFM")){
+    m.toLogOddRatio();
+  }  
+
+  // Fast Pvalue
+  double granularity = granularityVec[0];
+  double score = RscoreVec[0];
+  m.computesIntegerMatrix(granularity,true);
+  double pvalue = m.fastPvalue(&m,(long long)(score * m.granularity + m.offset));
+  Rcpp::NumericVector ans(1);
+  ans[0] = pvalue;
+  // free the memory allocated, not typical Rcpp way
+  for(i=0; i<nrow; i++){
+    delete[] m.mat[i];
+  }
+  delete[] m.mat;
+  return Rcpp::wrap(ans);
+}
+
+/********************************************************************
+ * .Call() Entry point LAZY
+ * *****************************************************************/
+RcppExport SEXP lazyScore(SEXP mat, SEXP Rpvalue, SEXP bg, SEXP type,
+    SEXP Rgranularity){
+  Rcpp::NumericVector background(bg);
+  Rcpp::NumericMatrix matrix(mat);
+  Rcpp::NumericVector RpvalueVec(Rpvalue);
+  Rcpp::CharacterVector Type(type);
+  Rcpp::NumericVector granularityVec(Rgranularity);
+
+  // Fill with background
+  Matrix m(background[0], background[1], background[2], background[3]);
+  // Fill with matrix
+  int i=0, j=0;
+  m.mat = new double*[4];
+  int ncol = matrix.ncol();
+  int nrow = matrix.nrow();
+  m.length = ncol;
+  for(i=0; i<nrow; i++){
+    m.mat[i] = new double[ncol];
+    for(j=0; j<ncol; j++){
+      m.mat[i][j] = matrix[j*nrow+i];
+    }
+  }
+  if(!strcmp(Type[0], "PFM")){
+    m.toLogOddRatio();
+  }
+  
+  // LAZY
+  double granularity = granularityVec[0];
+  double requestedPvalue = RpvalueVec[0];
+  m.computesIntegerMatrix(granularity,true);
+  map<long long, double> *nbOcc = new map<long long, double> [m.length+1];
+  map<long long, double> *pbuf = new map<long long, double> [m.length+1];
+  long long score = m.maxScore+ceil(m.errorMax);
+  long long d = 0;
+  double pv = 0;
+  nbOcc[m.length][score] = pv;
+  while (pv <= requestedPvalue) {
+    score --;
+    pv += _beckstette(m,&nbOcc,&pbuf,m.length-1,score,d);
+    nbOcc[m.length][score] = pv;
+    d++;
+  }
+  pv = nbOcc[m.length][score];
+
+  Rcpp::NumericVector ans(1);
+  ans[0] = ((score-m.offset)/m.granularity);
+  // free the memory allocated, not typical Rcpp way
+  for(i=0; i<nrow; i++){
+    delete[] m.mat[i];
+  }
+  delete[] m.mat;
+  delete[] nbOcc;
+  delete[] pbuf;
+
+  return Rcpp::wrap(ans);
+}
 

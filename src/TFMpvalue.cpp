@@ -7,37 +7,7 @@
  *
  */
 
-#include <iostream>
-#include <vector>
-#include <fstream>
-#include <cmath>
-#include <string>
-#include <map>
-#include <GetOpt.h>
-#include <cstdlib>
-#include <stdio.h>
-
-#include "Matrix.h"
-#include "ArgumentException.h"
-
-using namespace std;
-
-//#define VERBOSE
-//#define PRINTVERBOSE
-
-#define PV2SC 0
-#define SC2PV 1
-#define ENUMSC 2
-#define DISTRIB 3
-#define FASTPVALUE 4
-#define LAZY 5
-
-#define TOLOGRATIO 1
-#define TOINTEGER 1
-
-#ifdef VERBOSE
-#define MEMORYCOUNT
-#endif
+#include "TFMpvalue.h"
 
 map<char,int> OPTIONS;
 static string REQUIRED[6] = { "a:t:c:g:m:p:", "a:t:c:g:m:s:" , "a:c:t:g:m:", "a:c:t:g:m:s:S:G:", "a:c:t:g:m:s:G:", "a:c:t:g:m:p:G:" };
