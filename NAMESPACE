@@ -1,2 +1,3 @@
 useDynLib(TFMPvalue, .registration = TRUE)
 
+importFrom{Rcpp, evalCpp}
