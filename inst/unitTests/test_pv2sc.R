@@ -11,7 +11,7 @@ test_pv2sc <- function(){
   type <- "PFM"
   #dyn.load("/Users/gtan/Repositories/Bitbucket/TFMPvalue/src/TFMPvalue.so")
   score <- TFMpv2sc(pfm, pvalue, bg, type)
-  checkEqualsNumeric(8.773708, score)
+  checkEqualsNumeric(8.773708, score, tolerance=0.01)
 
 }
 

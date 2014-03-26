@@ -12,7 +12,7 @@ test_lazyScore <- function(){
   granularity <- 1e-5
   #dyn.load("/Users/gtan/Repositories/Bitbucket/TFMPvalue/src/TFMPvalue.so")
   score <- TFMLazyScore(pfm, pvalue, bg, type, granularity)
-  checkEqualsNumeric(8.77361, score)
+  checkEqualsNumeric(8.77361, score, tolerance=0.01)
 
 }
 
