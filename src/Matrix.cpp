@@ -126,6 +126,10 @@ void Matrix::computesIntegerMatrix (double granularity, bool sortColumns) {
         matInt[k][i] = mattemp[k][i];
       }
     }
+    for(int i=0; i<4; i++){
+      delete[] mattemp[i];
+    }
+    delete[] mattemp;
     delete[] maxs;
   }
   
