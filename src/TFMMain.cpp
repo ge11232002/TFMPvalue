@@ -26,6 +26,12 @@ void freeMatrix(Matrix m, int nrow){
   }
   delete[] m.matInt;
   delete[] m.mat;
+  delete[] m.offsets;
+  delete[] m.minScoreColumn;
+  delete[] m.maxScoreColumn;
+  delete[] m.sum;
+  delete[] m.bestScore;
+  delete[] m.worstScore;
 }
 
 /********************************************************************
