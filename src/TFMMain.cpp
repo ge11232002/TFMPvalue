@@ -22,7 +22,9 @@ void freeMatrix(Matrix m, int nrow){
   // free the memory allocated, not typical Rcpp way
   for(int i=0; i<nrow; i++){
     delete[] m.mat[i];
+    delete[] m.matInt[i];
   }
+  delete[] m.matInt;
   delete[] m.mat;
 }
 
