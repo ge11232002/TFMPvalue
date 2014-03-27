@@ -7,8 +7,8 @@ TFMLazyScore <- function(mat, pvalue, bg=c(A=0.25, C=0.25, G=0.25, T=0.25),
   if(pvalue > 1 || pvalue < 0){
     stop("pvalue must be between 0 and 1")
   }
-  if(granularity >1 || granularity < 0){
-    stop("granularity must be between 0 and 1")
+  if(granularity <= 0){
+    stop("granularity must be larger than 0")
   }
   score <- .Call("lazyScore", mat, pvalue, bg, type, granularity, 
                  PACKAGE="TFMPvalue")
