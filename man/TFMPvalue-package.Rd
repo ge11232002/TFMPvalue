@@ -16,7 +16,7 @@
 \details{
   The original code is taken from \url{http://bioinfo.lifl.fr/TFM/TFMpvalue/TFM-Pvalue.tar.gz}, retrived 26/03/2014.
 
-  The algorithm is described in Touzet, H., and Varré, J.-S. (2007). Efficient and accurate P-value computation for Position Weight Matrices. Algorithms Mol Biol 2, 15.
+  The algorithm is described in Touzet, H., and Varre, J.-S. (2007). Efficient and accurate P-value computation for Position Weight Matrices. Algorithms Mol Biol 2, 15.
 }
 
 \author{

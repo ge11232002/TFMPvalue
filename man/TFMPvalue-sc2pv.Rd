@@ -34,7 +34,7 @@ TFMsc2pv(mat, score, bg=c(A=0.25, C=0.25, G=0.25, T=0.25),
   The P-value is returned based on the matrix, given the desired score.
 }
 \references{
-  Touzet, H., and Varré, J.-S. (2007). Efficient and accurate P-value computation for Position Weight Matrices. Algorithms Mol Biol 2, 15.
+  Touzet, H., and Varre, J.-S. (2007). Efficient and accurate P-value computation for Position Weight Matrices. Algorithms Mol Biol 2, 15.
 }
 \author{
   Ge Tan

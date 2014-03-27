@@ -35,7 +35,7 @@ TFMpv2sc(mat, pvalue, bg=c(A=0.25, C=0.25, G=0.25, T=0.25),
 }
 
 \references{
-  Touzet, H., and Varré, J.-S. (2007). Efficient and accurate P-value computation for Position Weight Matrices. Algorithms Mol Biol 2, 15.
+  Touzet, H., and Varre, J.-S. (2007). Efficient and accurate P-value computation for Position Weight Matrices. Algorithms Mol Biol 2, 15.
 
 }
 
