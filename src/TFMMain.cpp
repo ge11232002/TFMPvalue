@@ -16,6 +16,17 @@
 using namespace std;
 
 /********************************************************************
+ * Free the Matric class
+ * *****************************************************************/
+void freeMatrix(Matrix m, int nrow){
+  // free the memory allocated, not typical Rcpp way
+  for(int i=0; i<nrow; i++){
+    delete[] m.mat[i];
+  }
+  delete[] m.mat;
+}
+
+/********************************************************************
  * .Call() Entry points  sc2pv
  * *****************************************************************/
 RcppExport SEXP sc2pv (SEXP mat, SEXP Rscore, SEXP bg, SEXP type){
@@ -98,10 +109,11 @@ RcppExport SEXP sc2pv (SEXP mat, SEXP Rscore, SEXP bg, SEXP type){
   Rcpp::NumericVector ans(1);
   ans[0] = pv;
   // free the memory allocated, not typical Rcpp way
-  for(i=0; i<nrow; i++){
-    delete[] m.mat[i];
-  }
-  delete[] m.mat;
+  //for(i=0; i<nrow; i++){
+  //  delete[] m.mat[i];
+  //}
+  //delete[] m.mat;
+  freeMatrix(m, nrow);
 
   return Rcpp::wrap(ans);
 }
@@ -158,11 +170,7 @@ RcppExport SEXP pv2sc (SEXP mat, SEXP Rpvalue, SEXP bg, SEXP type){
   }
   Rcpp::NumericVector ans(1);
   ans[0] = ((score-m.offset)/m.granularity);
-  // free the memory allocated, not typical Rcpp way
-  for(i=0; i<nrow; i++){
-    delete[] m.mat[i];
-  }
-  delete[] m.mat;
+  freeMatrix(m, nrow);
   return Rcpp::wrap(ans);
 }
 
@@ -202,11 +210,7 @@ RcppExport SEXP FastPvalue(SEXP mat, SEXP Rscore, SEXP bg, SEXP type,
   double pvalue = m.fastPvalue(&m,(long long)(score * m.granularity + m.offset));
   Rcpp::NumericVector ans(1);
   ans[0] = pvalue;
-  // free the memory allocated, not typical Rcpp way
-  for(i=0; i<nrow; i++){
-    delete[] m.mat[i];
-  }
-  delete[] m.mat;
+  freeMatrix(m, nrow);
   return Rcpp::wrap(ans);
 }
 
@@ -259,11 +263,7 @@ RcppExport SEXP lazyScore(SEXP mat, SEXP Rpvalue, SEXP bg, SEXP type,
 
   Rcpp::NumericVector ans(1);
   ans[0] = ((score-m.offset)/m.granularity);
-  // free the memory allocated, not typical Rcpp way
-  for(i=0; i<nrow; i++){
-    delete[] m.mat[i];
-  }
-  delete[] m.mat;
+  freeMatrix(m, nrow);
   delete[] nbOcc;
   delete[] pbuf;
 
