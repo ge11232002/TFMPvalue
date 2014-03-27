@@ -10,6 +10,8 @@ TFMLazyScore <- function(mat, pvalue, bg=c(A=0.25, C=0.25, G=0.25, T=0.25),
   if(granularity <= 0){
     stop("granularity must be larger than 0")
   }
+  bg <- normargPriorParams(bg)
+  mat <- normargMat(mat)
   score <- .Call("lazyScore", mat, pvalue, bg, type, granularity, 
                  PACKAGE="TFMPvalue")
   return(score)

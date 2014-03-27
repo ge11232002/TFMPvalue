@@ -14,4 +14,4 @@ Type: Package
 biocViews: MotifAnnotation, GeneRegulation, MotifDiscovery
 NeedsCompilation: yes
 LazyData: yes
-Collate: TFMPvalue-sc2pv.R TFMPvalue-pv2sc.R TFMPvalue-lazyScore.R
+Collate: TFMPvalue-sc2pv.R TFMPvalue-pv2sc.R TFMPvalue-lazyScore.R util.R
