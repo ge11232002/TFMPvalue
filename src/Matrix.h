@@ -104,12 +104,12 @@ public:
       }
     }
 #ifdef PRINTLOGRATIO
-    for (int k = 0; k < 4; k++ ) {
+/*    for (int k = 0; k < 4; k++ ) {
       for (int i = 0 ; i < length; i++) {
         cout << mat[k][i] << "\t";
       }
       cout << endl;
-    }
+    }*/
 #endif
   }
   
@@ -124,7 +124,7 @@ public:
     map<long long, double>::iterator iter;
     
     if (OPTIONS['h']) {
-      cout << "Scores and p-values between " << min << " and " << max << endl;
+      //cout << "Scores and p-values between " << min << " and " << max << endl;
     } 
     
     // computes p values and stores them in nbocc[length] 
@@ -138,7 +138,7 @@ public:
     
     iter = nbocc[length].begin();
     while (iter != nbocc[length].end() && iter->first <= max) {
-      cout << (((iter->first)-offset)/granularity) << " " << (iter->second) << " " << nbocc[length-1][iter->first] << endl;
+      //cout << (((iter->first)-offset)/granularity) << " " << (iter->second) << " " << nbocc[length-1][iter->first] << endl;
       iter ++;
     }
   }
@@ -192,13 +192,13 @@ public:
     
     
 #ifdef PRINTVERBOSE
-    cout << "INITIAL MATRIX" << endl;    
+    /*cout << "INITIAL MATRIX" << endl;    
     for (int k = 0; k < 4; k++ ) {
       for (int i = 0 ; i < length; i++) {
         cout << mat[k][i] << "\t";
       }
       cout << endl;
-    }
+    }*/
 #endif
     
     

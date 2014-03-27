@@ -49,7 +49,7 @@ void Matrix::computesIntegerMatrix (double granularity, bool sortColumns) {
   }
   
 #ifdef PRINTVERBOSE
-  cout << "SCORE RANGE : " << minS << " -> " << maxS << endl;
+  /*cout << "SCORE RANGE : " << minS << " -> " << maxS << endl;
   
   cout << "PRECISION " << this->granularity << endl;
   
@@ -60,7 +60,7 @@ void Matrix::computesIntegerMatrix (double granularity, bool sortColumns) {
       cout << matInt[k][i] << "\t";
     }
     cout << endl;
-  }
+  }*/
 #endif
   
   this->errorMax = 0.0;
@@ -72,7 +72,7 @@ void Matrix::computesIntegerMatrix (double granularity, bool sortColumns) {
     this->errorMax += maxE;
   }
 #ifdef PRINTVERBOSE
-  cout << "  ERROR MAX : " << this->errorMax << endl;
+  //cout << "  ERROR MAX : " << this->errorMax << endl;
 #endif
   
   if (sortColumns) {
@@ -112,13 +112,13 @@ void Matrix::computesIntegerMatrix (double granularity, bool sortColumns) {
       }
     }
 #ifdef PRINTVERBOSE
-    cout << "INTEGER MATRIX WITHOUT OFFSET ORDERED" << endl;
+    /*cout << "INTEGER MATRIX WITHOUT OFFSET ORDERED" << endl;
     for (int k = 0; k < 4; k++)  {
       for (int i = 0; i < length; i++) {
         cout << mattemp[k][i] << "\t";
       }
       cout << endl;    
-    }
+    }*/
 #endif
     
     for (int k = 0; k < 4; k++)  {
@@ -149,17 +149,17 @@ void Matrix::computesIntegerMatrix (double granularity, bool sortColumns) {
   }
   
 #ifdef PRINTVERBOSE
-  cout << "OFFSET : " << this->offset << endl;
+  //cout << "OFFSET : " << this->offset << endl;
 #endif
   
 #ifdef PRINTVERBOSE
-  cout << "INTEGER MATRIX WITH OFFSET" << endl;
+  /*cout << "INTEGER MATRIX WITH OFFSET" << endl;
   for (int k = 0; k < 4; k++ )  {
     for (int i = 0; i < length; i++) {
       cout << matInt[k][i] << "\t";
     }
     cout << endl;    
-  }
+  }*/
 #endif
   
   
@@ -190,7 +190,7 @@ void Matrix::computesIntegerMatrix (double granularity, bool sortColumns) {
   this->scoreRange = maxScore - minScore + 1;
   
 #ifdef PRINTVERBOSE
-  cout << "SCORE RANGE : " << minScore << " - " << maxScore << " : " << this->scoreRange << endl;
+  //cout << "SCORE RANGE : " << minScore << " - " << maxScore << " : " << this->scoreRange << endl;
 #endif
   
   bestScore = new long long[length];
@@ -216,7 +216,7 @@ void Matrix::lookForPvalue (long long requestedScore, long long min, long long m
   map<long long, double>::iterator iter;
   
 #ifdef SHOWCERR
-  cerr << "  Looks for Pvalue between " << min << " and " << max << " for score " << requestedScore << endl;
+  //cerr << "  Looks for Pvalue between " << min << " and " << max << " for score " << requestedScore << endl;
 #endif
   // computes p values and stores them in nbocc[length] 
   double sum = nbocc[length][max+1];
@@ -260,7 +260,7 @@ long long Matrix::lookForScore (long long min, long long max, double requestedPv
   map<long long, double> *nbocc = calcDistribWithMapMinMax(min,max); 
   map<long long, double>::iterator iter;
 #ifdef SHOWCERR
-  cerr << "  Looks for score between " << min << " and " << max << endl;
+  //cerr << "  Looks for score between " << min << " and " << max << endl;
 #endif
   // computes p values and stores them in nbocc[length] 
   double sum = 0.0;
@@ -296,8 +296,8 @@ long long Matrix::lookForScore (long long min, long long max, double requestedPv
     //cout << "Pv(S) " << riter->first << " " << sum << endl;   
   }
 #ifdef VERBOSE
-  cerr << riter->first << "      ALPHA found at score " << alpha << " and P-value " << nbocc[length][alpha] << endl;
-  cerr << riter->first << "      ALPHA-E found at score " << alpha_E << " and P-value " << nbocc[length][alpha_E] << endl;
+  //cerr << riter->first << "      ALPHA found at score " << alpha << " and P-value " << nbocc[length][alpha] << endl;
+  //cerr << riter->first << "      ALPHA-E found at score " << alpha_E << " and P-value " << nbocc[length][alpha_E] << endl;
 #endif    
   
   // affichage des pvaleurs
@@ -338,7 +338,7 @@ map<long long, double> *Matrix::calcDistribWithMapMinMax (long long min, long lo
   long long *maxs = new long long[length+1]; // @ pos i maximum score reachable with the suffix matrix from i to length-1
   
 #ifdef VERBOSE    
-  cerr << "  Calc distrib between " << min << " and " << max << endl;
+  //cerr << "  Calc distrib between " << min << " and " << max << endl;
 #endif
   
   maxs[length] = 0;
