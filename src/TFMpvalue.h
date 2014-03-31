@@ -4,7 +4,7 @@
 #include <cmath>
 #include <string>
 #include <map>
-#include <GetOpt.h>
+//#include <GetOpt.h>
 #include <cstdlib>
 #include <stdio.h>
 
