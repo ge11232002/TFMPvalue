@@ -76,13 +76,13 @@ RcppExport SEXP sc2pv (SEXP mat, SEXP Rscore, SEXP bg, SEXP type){
   bool forcedGranularity = false;
   double maxGranularity = 1e-9;
   double requestedScore = RScoreVec[0];
-  long long totalSize = 0;
-  long long totalOp = 0;
-  long long max;
-  long long min;
+  qlonglong totalSize = 0;
+  qlonglong totalOp = 0;
+  qlonglong max;
+  qlonglong min;
   double ppv;
   double pv;
-  long long score;
+  qlonglong score;
   for (double granularity = initialGranularity; granularity >= maxGranularity; granularity /= 10){
     //cout << "Computing rounded matrix with granularity " << granularity << endl;
     m.computesIntegerMatrix(granularity);
@@ -157,13 +157,13 @@ RcppExport SEXP pv2sc (SEXP mat, SEXP Rpvalue, SEXP bg, SEXP type){
   double requestedPvalue = RPvalueVec[0];
   double maxGranularity = 1e-10;
   bool sortColumns = false;
-  long long decrgr = 10;
+  qlonglong decrgr = 10;
 
   m.computesIntegerMatrix(initialGranularity);
-  long long max = m.maxScore+ceil(m.errorMax+0.5);
-  long long min = m.minScore;
+  qlonglong max = m.maxScore+ceil(m.errorMax+0.5);
+  qlonglong min = m.minScore;
   double pv;
-  long long score;
+  qlonglong score;
   for (double granularity = initialGranularity; granularity >= maxGranularity; granularity /= decrgr) {
     m.computesIntegerMatrix(granularity);
     double ppv;
@@ -215,7 +215,7 @@ RcppExport SEXP FastPvalue(SEXP mat, SEXP Rscore, SEXP bg, SEXP type,
   double granularity = granularityVec[0];
   double score = RscoreVec[0];
   m.computesIntegerMatrix(granularity,true);
-  double pvalue = m.fastPvalue(&m,(long long)(score * m.granularity + m.offset));
+  double pvalue = m.fastPvalue(&m,(qlonglong)(score * m.granularity + m.offset));
   Rcpp::NumericVector ans(1);
   ans[0] = pvalue;
   freeMatrix(m, nrow);
@@ -255,10 +255,10 @@ RcppExport SEXP lazyScore(SEXP mat, SEXP Rpvalue, SEXP bg, SEXP type,
   double granularity = granularityVec[0];
   double requestedPvalue = RpvalueVec[0];
   m.computesIntegerMatrix(granularity,true);
-  map<long long, double> *nbOcc = new map<long long, double> [m.length+1];
-  map<long long, double> *pbuf = new map<long long, double> [m.length+1];
-  long long score = m.maxScore+ceil(m.errorMax);
-  long long d = 0;
+  map<qlonglong, double> *nbOcc = new map<qlonglong, double> [m.length+1];
+  map<qlonglong, double> *pbuf = new map<qlonglong, double> [m.length+1];
+  qlonglong score = m.maxScore+ceil(m.errorMax);
+  qlonglong d = 0;
   double pv = 0;
   nbOcc[m.length][score] = pv;
   while (pv <= requestedPvalue) {

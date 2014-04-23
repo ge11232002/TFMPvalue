@@ -31,8 +31,8 @@ using namespace std;
 #define MEMORYCOUNT
 #endif
 
-double _beckstette (Matrix m, map<long long, double> **nbOcc, map<long long, double> **pbuf, int pos, long long score, long long d);
+double _beckstette (Matrix m, map<qlonglong, double> **nbOcc, map<qlonglong, double> **pbuf, int pos, qlonglong score, qlonglong d);
 
-double _beckstettePbuf (Matrix m, map<long long, double> **nbOcc, map<long long, double> **pbuf, int pos, long long score, long long d);
+double _beckstettePbuf (Matrix m, map<qlonglong, double> **nbOcc, map<qlonglong, double> **pbuf, int pos, qlonglong score, qlonglong d);
 
 

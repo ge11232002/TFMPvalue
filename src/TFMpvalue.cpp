@@ -18,7 +18,7 @@ void stop () {
   getline(cin,str);
 }
 
-void enumScoreFloatPvalue (Matrix *m, int pos, double score, map<double,int> *t, long long *nbocc, long long pval) {
+void enumScoreFloatPvalue (Matrix *m, int pos, double score, map<double,int> *t, qlonglong *nbocc, qlonglong pval) {
   
   if (*nbocc < pval) {
     if (pos == m->length) {
@@ -43,7 +43,7 @@ void enumScoreFloat (Matrix *m, int pos, double score, map<double,int> *t) {
   }
 }
 
-void enumScore (Matrix *m, int pos, long long score, map<long long,int>*t) {
+void enumScore (Matrix *m, int pos, qlonglong score, map<qlonglong,int>*t) {
   
   if (pos == m->length) {
     (*t)[score] += 1;
@@ -59,12 +59,12 @@ void enumScore (Matrix *m, int pos, long long score, map<long long,int>*t) {
  * LAZY DISTRIBUTION
  */
 
-double _beckstette (Matrix m, map<long long, double> **nbOcc, map<long long, double> **pbuf, int pos, long long score, long long d);
+double _beckstette (Matrix m, map<qlonglong, double> **nbOcc, map<qlonglong, double> **pbuf, int pos, qlonglong score, qlonglong d);
 
-double _beckstettePbuf (Matrix m, map<long long, double> **nbOcc, map<long long, double> **pbuf, int pos, long long score, long long d) {
+double _beckstettePbuf (Matrix m, map<qlonglong, double> **nbOcc, map<qlonglong, double> **pbuf, int pos, qlonglong score, qlonglong d) {
   //cout << "d=" << d << " Pbuf_" << pos << " (" << score << ") = ";
   if (pos == -1) { return 0; }
-  map<long long,double>::iterator iterPbuf;
+  map<qlonglong,double>::iterator iterPbuf;
   iterPbuf = (*pbuf)[pos].find(score);
   double nb;
   if (iterPbuf == ((*pbuf)[pos]).end()) {
@@ -75,7 +75,7 @@ double _beckstettePbuf (Matrix m, map<long long, double> **nbOcc, map<long long,
   // compute Pbuf[pos][score]
   for (int k = 0; k < 4; k++) {
     if (m.matInt[k][pos] < m.maxScoreColumn[pos] - d) {
-      long long s = score - m.matInt[k][pos];
+      qlonglong s = score - m.matInt[k][pos];
       //cout << "(" << k << "," << pos << ")" << "->" << matInt[k][pos] << " ";
       if (s <= m.bestScore[pos-1] && s >= 0) {
         nb += _beckstette(m,nbOcc,pbuf,pos-1,s,d) * m.background[k];
@@ -86,23 +86,23 @@ double _beckstettePbuf (Matrix m, map<long long, double> **nbOcc, map<long long,
   return nb;
 }
 
-double _beckstette (Matrix m, map<long long, double> **nbOcc, map<long long, double> **pbuf, int pos, long long score, long long d) {
+double _beckstette (Matrix m, map<qlonglong, double> **nbOcc, map<qlonglong, double> **pbuf, int pos, qlonglong score, qlonglong d) {
   //cout << "Q_" << pos << " (" << score << ")" << endl;
   if (score < 0 || pos == -1) {
     if (score == 0) return 1;
     else return 0;
   }
-  map<long long ,double>::iterator iterNbOcc;
+  map<qlonglong ,double>::iterator iterNbOcc;
   iterNbOcc = (*nbOcc)[pos].find(score);
   if (iterNbOcc == ((*nbOcc)[pos]).end()) {
     // first compute pbuf
     double nb = _beckstettePbuf(m,nbOcc,pbuf,pos,score,d);
-    //      long long nb = (*pbuf)[pos][score];
+    //      qlonglong nb = (*pbuf)[pos][score];
     //cout << nb << endl;
     // then compute NbOcc
     for (int k = 0; k < 4; k++) {
       if (m.matInt[k][pos] >= m.maxScoreColumn[pos] - d) {
-        long long s = score - m.matInt[k][pos];
+        qlonglong s = score - m.matInt[k][pos];
         if (s <= m.bestScore[pos-1] && s >= 0) {
           nb += _beckstette(m,nbOcc,pbuf,pos-1,s,d) * m.background[k];
         }
@@ -116,8 +116,8 @@ double _beckstette (Matrix m, map<long long, double> **nbOcc, map<long long, dou
 void testLazyDistrib (Matrix m, double granularity, double requestedPvalue) {
 
 #ifdef MEMORYCOUNT
-  long long totalSize = 0;
-  long long totalOp = 0;
+  qlonglong totalSize = 0;
+  qlonglong totalOp = 0;
 #endif
 
 
@@ -126,10 +126,10 @@ void testLazyDistrib (Matrix m, double granularity, double requestedPvalue) {
 #endif
 
   m.computesIntegerMatrix(granularity,true);
-  map<long long, double> *nbOcc = new map<long long, double> [m.length+1];
-  map<long long, double> *pbuf = new map<long long, double> [m.length+1];
-  long long score = m.maxScore+ceil(m.errorMax);
-  long long d = 0;
+  map<qlonglong, double> *nbOcc = new map<qlonglong, double> [m.length+1];
+  map<qlonglong, double> *pbuf = new map<qlonglong, double> [m.length+1];
+  qlonglong score = m.maxScore+ceil(m.errorMax);
+  qlonglong d = 0;
   double pv = 0;
   nbOcc[m.length][score] = pv;
   while (pv <= requestedPvalue) {
@@ -182,12 +182,12 @@ void testFastPvalue (Matrix m, double granularity, double score) {
 #endif
 
 #ifdef MEMORYCOUNT
-  long long totalSize = 0;
-  long long totalOp = 0;
+  qlonglong totalSize = 0;
+  qlonglong totalOp = 0;
 #endif
 
   m.computesIntegerMatrix(granularity,true);
-  double pvalue = m.fastPvalue(&m,(long long)(score * m.granularity + m.offset));
+  double pvalue = m.fastPvalue(&m,(qlonglong)(score * m.granularity + m.offset));
 
   if (OPTIONS['h']) {
     /*cout << "Score          : " << score << endl;
@@ -216,15 +216,15 @@ void testScoreToPvalue (Matrix m, double initialGranularity, double requestedSco
 #endif
   
 #ifdef MEMORYCOUNT
-  long long totalSize = 0;
-  long long totalOp = 0;
+  qlonglong totalSize = 0;
+  qlonglong totalOp = 0;
 #endif
   
-  long long max;
-  long long min;
+  qlonglong max;
+  qlonglong min;
   double ppv;
   double pv;
-  long long score;
+  qlonglong score;
   
   for (double granularity = initialGranularity; granularity >= maxGranularity; granularity /= 10) {
 #ifdef VERBOSE
@@ -302,24 +302,24 @@ void testScoreToPvalue (Matrix m, double initialGranularity, double requestedSco
 }
 
 
-void testPvalueToScore (Matrix m, double initialGranularity, double requestedPvalue, bool forcedGranularity = false, double maxGranularity = 1e-10, bool sortColumns = false, long long decrgr = 10) {
+void testPvalueToScore (Matrix m, double initialGranularity, double requestedPvalue, bool forcedGranularity = false, double maxGranularity = 1e-10, bool sortColumns = false, qlonglong decrgr = 10) {
 
 #ifdef VERBOSE
   //cerr << "### PvalueToScore (pv  " << requestedPvalue << ") #########################################" << endl;
 #endif
   
 #ifdef MEMORYCOUNT
-  long long totalSize;
-  long long totalOp;
+  qlonglong totalSize;
+  qlonglong totalOp;
   totalSize = 0;
   totalOp = 0;
 #endif
   
   m.computesIntegerMatrix(initialGranularity);
-  long long max = m.maxScore+ceil(m.errorMax+0.5);
-  long long min = m.minScore;
+  qlonglong max = m.maxScore+ceil(m.errorMax+0.5);
+  qlonglong min = m.minScore;
   double pv;
-  long long score;
+  qlonglong score;
   
   for (double granularity = initialGranularity; granularity >= maxGranularity; granularity /= decrgr) {
     
@@ -549,10 +549,10 @@ void arguments (int argc, char * const argv[]) {
       break;
     case ENUMSC :
     {
-      long long nbsc = 0;
+      qlonglong nbsc = 0;
       if (OPTIONS['G']) {
         m.computesIntegerMatrix(atof(argv[OPTIONS['G']]));
-        map<long long,int> t;
+        map<qlonglong,int> t;
         enumScore(&m,0,0,&t);
         nbsc = t.size();
       } else {
@@ -570,10 +570,10 @@ void arguments (int argc, char * const argv[]) {
       }
       if (OPTIONS['h']) {
         cout << "Number of different scores = " << nbsc << endl;
-        cout << "Number of different words  = " << (long long)(pow(4.0,m.length)) << endl;
+        cout << "Number of different words  = " << (qlonglong)(pow(4.0,m.length)) << endl;
         
       } else {
-        cout << nbsc << " " << (long long)(pow(4.0,m.length)) << endl;
+        cout << nbsc << " " << (qlonglong)(pow(4.0,m.length)) << endl;
       }
     }
       break;

@@ -22,7 +22,14 @@
 
 using namespace std;
 
-#define ROUND_TO_INT(n) ((long long)floor(n))
+#ifdef __GNUC__
+  #include <sys/types.h>
+  typedef int64_t qlonglong;
+#else
+  typedef long long qlonglong;
+#endif
+
+#define ROUND_TO_INT(n) ((qlonglong)floor(n))
 #define MIN(a,b) ((a)<(b)?(a):(b))
 #define MAX(a,b) ((a)>(b)?(a):(b))
 
@@ -61,24 +68,24 @@ public:
   
 
   // used for efficiency tests
-  long long totalMapSize;
-  long long totalOp;
+  qlonglong totalMapSize;
+  qlonglong totalOp;
   
   double ** mat; // the matrix as it is stored in the matrix file
   int length;
   double granularity; // the real granularity used, greater than 1
-  long long ** matInt; // the discrete matrix with offset
+  qlonglong ** matInt; // the discrete matrix with offset
   double errorMax;
-  long long *offsets; // offset of each column
-  long long offset; // sum of offsets
-  long long *minScoreColumn; // min discrete score at each column
-  long long *maxScoreColumn; // max discrete score at each column
-  long long *sum;
-  long long minScore;  // min total discrete score (normally 0)
-  long long maxScore;  // max total discrete score
-  long long scoreRange;  // score range = max - min + 1
-  long long *bestScore;
-  long long *worstScore;
+  qlonglong *offsets; // offset of each column
+  qlonglong offset; // sum of offsets
+  qlonglong *minScoreColumn; // min discrete score at each column
+  qlonglong *maxScoreColumn; // max discrete score at each column
+  qlonglong *sum;
+  qlonglong minScore;  // min total discrete score (normally 0)
+  qlonglong maxScore;  // max total discrete score
+  qlonglong scoreRange;  // score range = max - min + 1
+  qlonglong *bestScore;
+  qlonglong *worstScore;
   double background[4];
   
   Matrix() {
@@ -119,9 +126,9 @@ public:
   void computesIntegerMatrix (double granularity, bool sortColumns = true);
   
   // computes the complete score distribution between score min and max
-  void showDistrib (long long min, long long max) {
-    map<long long, double> *nbocc = calcDistribWithMapMinMax(min,max); 
-    map<long long, double>::iterator iter;
+  void showDistrib (qlonglong min, qlonglong max) {
+    map<qlonglong , double> *nbocc = calcDistribWithMapMinMax(min,max); 
+    map<qlonglong , double>::iterator iter;
     
     if (OPTIONS['h']) {
       //cout << "Scores and p-values between " << min << " and " << max << endl;
@@ -129,7 +136,7 @@ public:
     
     // computes p values and stores them in nbocc[length] 
     double sum = 0;
-    map<long long, double>::reverse_iterator riter = nbocc[length-1].rbegin();
+    map<qlonglong , double>::reverse_iterator riter = nbocc[length-1].rbegin();
     while (riter != nbocc[length-1].rend()) {
       sum += riter->second;
       nbocc[length][riter->first] = sum;
@@ -146,24 +153,24 @@ public:
   /**
     * Computes the pvalue associated with the threshold score requestedScore.
     */
-  void lookForPvalue (long long requestedScore, long long min, long long max, double *pmin, double *pmax);
+  void lookForPvalue (qlonglong requestedScore, qlonglong min, qlonglong max, double *pmin, double *pmax);
     
   /**
     * Computes the score associated with the pvalue requestedPvalue.
     */
-  long long lookForScore (long long min, long long max, double requestedPvalue, double *rpv, double *rppv);
+  qlonglong lookForScore (qlonglong min, qlonglong max, double requestedPvalue, double *rpv, double *rppv);
     
   /** 
     * Computes the distribution of scores between score min and max as the DP algrithm proceeds 
     * but instead of using a table we use a map to avoid computations for scores that cannot be reached
     */
-  map<long long, double> *calcDistribWithMapMinMax (long long min, long long max); 
+  map<qlonglong , double> *calcDistribWithMapMinMax (qlonglong min, qlonglong max); 
     
   
   /**
     * Computes the pvalue for a given score and at a fixed granularity
    */
-  long long fastPvalue (Matrix *m, long long alpha);
+  qlonglong fastPvalue (Matrix *m, qlonglong alpha);
   
   void readJasparMatrix (string filename) {
     
