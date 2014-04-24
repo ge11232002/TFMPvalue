@@ -23,8 +23,12 @@
 using namespace std;
 
 #ifdef __GNUC__
-  #include <sys/types.h>
-  typedef int64_t qlonglong;
+  #ifdef _WIN32
+    typedef long long qlonglong;
+  #else
+    #include <sys/types.h>
+    typedef int64_t qlonglong;
+  #endif
 #else
   typedef long long qlonglong;
 #endif
