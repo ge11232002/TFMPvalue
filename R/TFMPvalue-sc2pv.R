@@ -8,7 +8,9 @@ TFMsc2pv <- function(mat, score, bg=c(A=0.25, C=0.25, G=0.25, T=0.25),
     stop("score must be length of 1")
   }
   bg <- normargPriorParams(bg)
-  mat <- normargMat(mat)
+  if(type == "PFM"){
+    mat <- normargMat(mat)
+  }
   pvalue <- .Call("sc2pv", mat, score, bg, type, PACKAGE="TFMPvalue")
   return(pvalue)
 }
