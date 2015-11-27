@@ -1,6 +1,6 @@
 Package: TFMPvalue
-Version: 0.0.5
-Date: 2014-05-07
+Version: 0.0.6
+Date: 2015-11-27
 Title: Efficient and Accurate P-value Computation for Position Weight Matrices
 Description: TFMPvalue provides the accurate calculation of P-value with 
              score threshold for Position Weight Matrices, 
