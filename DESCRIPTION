@@ -13,7 +13,7 @@ Maintainer: Ge Tan <ge.tan09@imperial.ac.uk>
 Copyright: 2007 LIFL-USTL-INRIA
 Imports: Rcpp(>= 0.11.1)
 Depends: R (>= 3.0.1)
-Suggests: RUnit
+Suggests: testthat
 LinkingTo: Rcpp
 License: GPL-2
 URL: https://github.com/ge11232002/TFMPvalue
