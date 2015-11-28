@@ -5,7 +5,8 @@
   Compute the score from P-value.
 }
 \description{
-Computes the score threshold associated with P-value p using the algorithm of Beckstette 2006.
+  Computes the score threshold associated with P-value p using the algorithm of 
+  Beckstette 2006.
 }
 \usage{
 TFMLazyScore(mat, pvalue, bg=c(A=0.25, C=0.25, G=0.25, T=0.25),
