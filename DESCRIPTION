@@ -1,8 +1,11 @@
 Package: TFMPvalue
 Version: 0.0.6
 Date: 2015-11-27
-Title: Efficient and Accurate P-value Computation for Position Weight Matrices
-Description: TFMPvalue provides the accurate calculation of P-value with 
+Title: Efficient and Accurate P-Value Computation for Position Weight Matrices
+Description: In putative Transcription Factor Binding Sites (TFBSs) 
+             identification from sequence/alignments,
+             we are interested in the significance of certain match score.
+             TFMPvalue provides the accurate calculation of P-value with 
              score threshold for Position Weight Matrices, 
              or the score with given P-value. 
              This package is an interface to code originally made available by 
