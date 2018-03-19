@@ -1,6 +1,6 @@
 Package: TFMPvalue
-Version: 0.0.7
-Date: 2015-11-29
+Version: 0.0.8
+Date: 2018-03-19
 Title: Efficient and Accurate P-Value Computation for Position Weight Matrices
 Description: In putative Transcription Factor Binding Sites (TFBSs) 
              identification from sequence/alignments,
@@ -11,8 +11,8 @@ Description: In putative Transcription Factor Binding Sites (TFBSs)
              It is an interface to code originally made available by 
              Helene Touzet and Jean-Stephane Varre, 2007, 
              Algorithms Mol Biol:2, 15. DOI: 10.1186/1748-7188-2-15
-Author: Ge Tan <ge.tan09@imperial.ac.uk>
-Maintainer: Ge Tan <ge.tan09@imperial.ac.uk>
+Author: Ge Tan <ge_tan@live.com>
+Maintainer: Ge Tan <ge_tan@live.com>
 Copyright: 2007 LIFL-USTL-INRIA
 Imports: Rcpp(>= 0.11.1)
 Depends: R (>= 3.0.1)
