@@ -1,6 +1,6 @@
 Package: TFMPvalue
-Version: 0.0.8
-Date: 2018-03-19
+Version: 0.0.9
+Date: 2022-10-19
 Title: Efficient and Accurate P-Value Computation for Position Weight Matrices
 Description: In putative Transcription Factor Binding Sites (TFBSs) 
              identification from sequence/alignments,
@@ -24,7 +24,6 @@ BugReports: https://github.com/ge11232002/TFMPvalue/issues
 Type: Package
 NeedsCompilation: yes
 SystemRequirements: C++11
-LazyData: yes
 Collate: TFMPvalue-sc2pv.R 
          TFMPvalue-pv2sc.R 
          TFMPvalue-lazyScore.R 
