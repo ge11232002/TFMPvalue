@@ -17,7 +17,7 @@ Authors@R: person(given = "Ge",
                   email = "ge_tan@live.com")
 Copyright: 2007 LIFL-USTL-INRIA
 Imports: Rcpp(>= 0.11.1)
-Depends: R (>= 4.5.0)
+Depends: R (>= 4.3.3)
 Suggests: testthat
 LinkingTo: Rcpp
 License: GPL-2
